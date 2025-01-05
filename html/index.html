@@ -1,38 +1,41 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
+<head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Movie Space</title>
     <link rel="stylesheet" href="../css/styles.css" />
-  </head>
-  <body>
+</head>
+<body>
     <header>
-      <h1>Welcome to Movie Space</h1>
-      <h2>See movies, search and filter genres to find what to watch tonight</h2>
+        <h1>Welcome to Movie Space</h1>
+        <h2>See movies, search and filter genres to find what to watch tonight</h2>
     </header>
     <main>
-       <div class="dataContainer">
-          <section class="searchMovies">
-            <h1>Search for a Movie</h1>
-            <input type="text" id="searchInput" placeholder="Enter movie title">
-            <button id="searchButton">Search</button>
-            <div class="error" id="errorMessage"></div>
-            <div id="searchedMovie"></div>
-          </section>
-
-          <section class="movieFetchSection">
-            <h3>Movies</h3>
-            <p>Displaying 10 movies</p>
-            <button id="fetchButton">Fetch Movies</button>
-            <div id="content"></div>
-          </section>
-       </div>
+        <div class="dataContainer">
+            <section class="searchMovies">
+                <h2>Search for a Movie</h2>
+                <form id="searchForm">
+                    <input type="text" id="searchInput" placeholder="Enter movie title" required>
+                    <button type="submit" class="button" id="searchButton">Search</button>
+                </form>
+                <div class="error" id="errorMessage"></div>
+                <div id="searchedMovie"></div>
+                <div id="searchResults"></div>
+                <div id="pagination"></div>
+            </section>
+            <section class="movieFetchSection">
+                <h3>Movies</h3>
+                <p>Displaying 10 movies</p>
+                <button class="button" id="fetchButton">Fetch Movies</button>
+                <div id="content"></div>
+            </section>
+        </div>
     </main>
     <footer>
-      <!-- <h2>Movie Space</h2> -->
+        <p>&copy; 2025 Movie Space. All rights reserved.</p>
     </footer>
     <script type="module" src="../js/accesstoken.js"></script>
     <script type="module" src="../js/script.js"></script>
-  </body>
+</body>
 </html>

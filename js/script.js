@@ -152,35 +152,71 @@ async function fetchWithAuth(url) {
 
 async function fetchGenres() {
     const apiUrl = `https://api.themoviedb.org/3/genre/movie/list`;
-    try {
-        const data = await fetchWithAuth(apiUrl);
+    const cachedGenres = localStorage.getItem('genres'); // Try to get cached genres
+
+    if (cachedGenres) {
+        // If cached genres exist, use them
+        const data = JSON.parse(cachedGenres);
         genreMap = Object.fromEntries(data.genres.map(genre => [genre.id, genre.name]));
 
-        const genreButtonsDiv = document.getElementById('genreButtons');
+        // Render genres using your existing logic
         data.genres.forEach(genre => {
             const button = document.createElement('button');
             button.textContent = genre.name; // Display genre name
             button.classList.add('genre-button', 'button', 'button-secondary');
             button.setAttribute('data-genre-id', genre.id); // Store genre ID in data attribute
-        
+
             button.addEventListener('click', () => {
                 // Remove 'selected' class from all buttons
                 document.getElementById('resetGenresButton').classList.remove('selected');
                 document.querySelectorAll('.genre-button').forEach(btn => btn.classList.remove('selected'));
-                
+
                 // Add 'selected' class to the clicked button
                 button.classList.add('selected');
-            
+
                 const selectedGenreId = button.getAttribute('data-genre-id');
                 currentPage = 1; // Reset to the first page when fetching new movies
                 clearSearchResults(); // Clear previous results
                 fetchMovies(selectedGenreId, currentPage); // Fetch movies for the selected genre
             });
-        
-            genreButtonsDiv.appendChild(button); // Append button to the genre buttons div
+
+            document.getElementById('genreButtons').appendChild(button); // Append button to the genre buttons div
         });
-    } catch (error) {
-        console.error('Error fetching genres:', error);
+    } else {
+        // Fetch genres from API if not cached
+        try {
+            const data = await fetchWithAuth(apiUrl);
+            genreMap = Object.fromEntries(data.genres.map(genre => [genre.id, genre.name]));
+
+            // Cache the fetched genres in local storage
+            localStorage.setItem('genres', JSON.stringify(data));
+
+            // Render genres using your existing logic
+            data.genres.forEach(genre => {
+                const button = document.createElement('button');
+                button.textContent = genre.name; // Display genre name
+                button.classList.add('genre-button', 'button', 'button-secondary');
+                button.setAttribute('data-genre-id', genre.id); // Store genre ID in data attribute
+
+                button.addEventListener('click', () => {
+                    // Remove 'selected' class from all buttons
+                    document.getElementById('resetGenresButton').classList.remove('selected');
+                    document.querySelectorAll('.genre-button').forEach(btn => btn.classList.remove('selected'));
+
+                    // Add 'selected' class to the clicked button
+                    button.classList.add('selected');
+
+                    const selectedGenreId = button.getAttribute('data-genre-id');
+                    currentPage = 1; // Reset to the first page when fetching new movies
+                    clearSearchResults(); // Clear previous results
+                    fetchMovies(selectedGenreId, currentPage); // Fetch movies for the selected genre
+                });
+
+                document.getElementById('genreButtons').appendChild(button); // Append button to the genre buttons div
+            });
+        } catch (error) {
+            console.error('Error fetching genres:', error);
+        }
     }
 }
 

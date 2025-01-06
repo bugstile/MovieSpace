@@ -252,8 +252,10 @@ function createMovieHTML(movie) {
 
     return `
         <div class="movie">
+            <div class="img-container">
+                <img class="img-movie-highlight" src="${posterSrc}" alt="${movie.title}">
+            </div>
             <h2>${movie.title} (${movie.release_date.split('-')[0]})</h2>
-            <img class="img-movie-highlight" src="${posterSrc}" alt="${movie.title}">
             <p><strong>Overview:</strong> ${movie.overview}</p>
             <p><strong>Release Date:</strong> ${movie.release_date}</p>
             <p><strong>Vote Average:</strong> ${movie.vote_average} (${movie.vote_count} votes)</p>
@@ -262,44 +264,47 @@ function createMovieHTML(movie) {
     `;
 }
 
-//get one movie, deprecated right now
-async function fetchMovieData(movieId) {
-    const apiUrl = `https://api.themoviedb.org/3/movie/${movieId}`;
-    try {
-        const data = await fetchWithAuth(apiUrl);
-        renderSpecificMovie(data);
-    } catch (error) {
-        console.error('Error fetching movie data:', error);
-    }
-}
 
-function renderSpecificMovie(data) {
-    const contentDiv = document.getElementById('content');
-    const genresList = data.genres.map(genre => `<span class="genre">${genre.name}</span>`).join('');
-    contentDiv.innerHTML = createSpecificMovieHTML(data, genresList);
-}
 
-function createSpecificMovieHTML(data, genresList) {
 
-    // Set the image source based on the availability of poster_path
-    const posterSrc = movie.poster_path 
-        ? `https://image.tmdb.org/t/p/w500${movie.poster_path}` 
-        : '../img/sad-outline.svg';
+// //get one movie, deprecated right now
+// async function fetchMovieData(movieId) {
+//     const apiUrl = `https://api.themoviedb.org/3/movie/${movieId}`;
+//     try {
+//         const data = await fetchWithAuth(apiUrl);
+//         renderSpecificMovie(data);
+//     } catch (error) {
+//         console.error('Error fetching movie data:', error);
+//     }
+// }
 
-    return `
-        <div class="movie">
-            <h1>${data.title} (${data.release_date.split('-')[0]})</h1>
-            <img src="${posterSrc}" alt="${movie.title}">
-            <p><strong>Tagline:</strong> ${data.tagline}</p>
-            <p><strong>Overview:</strong> ${data.overview}</p>
-            <p><strong>Genres:</strong> <span class="genres">${genresList}</span></p>
-            <p><strong>Production Companies:</strong> ${data.production_companies.map(pc => pc.name).join(', ')}</p>
-            <p><strong>Release Date:</strong> ${data.release_date}</p>
-            <p><strong>Status:</strong> ${data.status}</p>
-            <p><strong>Vote Average:</strong> ${data.vote_average} (${data.vote_count} votes)</p>
-            <p><strong>Budget:</strong> $${data.budget.toLocaleString()}</p>
-            <p><strong>Revenue:</strong> $${data.revenue.toLocaleString()}</p>
-            <p><strong>Homepage:</strong> <a href="${data.homepage}" target="_blank">${data.homepage}</a></p>
-        </div>
-    `;
-}
+// function renderSpecificMovie(data) {
+//     const contentDiv = document.getElementById('content');
+//     const genresList = data.genres.map(genre => `<span class="genre">${genre.name}</span>`).join('');
+//     contentDiv.innerHTML = createSpecificMovieHTML(data, genresList);
+// }
+
+// function createSpecificMovieHTML(data, genresList) {
+
+//     // Set the image source based on the availability of poster_path
+//     const posterSrc = movie.poster_path 
+//         ? `https://image.tmdb.org/t/p/w500${movie.poster_path}` 
+//         : '../img/sad-outline.svg';
+
+//     return `
+//         <div class="movie">
+//             <h1>${data.title} (${data.release_date.split('-')[0]})</h1>
+//             <img src="${posterSrc}" alt="${movie.title}">
+//             <p><strong>Tagline:</strong> ${data.tagline}</p>
+//             <p><strong>Overview:</strong> ${data.overview}</p>
+//             <p><strong>Genres:</strong> <span class="genres">${genresList}</span></p>
+//             <p><strong>Production Companies:</strong> ${data.production_companies.map(pc => pc.name).join(', ')}</p>
+//             <p><strong>Release Date:</strong> ${data.release_date}</p>
+//             <p><strong>Status:</strong> ${data.status}</p>
+//             <p><strong>Vote Average:</strong> ${data.vote_average} (${data.vote_count} votes)</p>
+//             <p><strong>Budget:</strong> $${data.budget.toLocaleString()}</p>
+//             <p><strong>Revenue:</strong> $${data.revenue.toLocaleString()}</p>
+//             <p><strong>Homepage:</strong> <a href="${data.homepage}" target="_blank">${data.homepage}</a></p>
+//         </div>
+//     `;
+// }

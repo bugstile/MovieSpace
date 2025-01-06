@@ -193,6 +193,7 @@ input {
 }
 
 .movieFetchSection {
+    margin: 0 auto;
     padding-top: 20px;
     width: 90vw;
     display: flex;
@@ -201,6 +202,13 @@ input {
     flex-wrap: wrap;
     justify-content: center;
     align-items: center;
+}
+
+.img-container {
+    display: flex;
+    flex-direction: column;
+    flex-wrap: wrap;
+    align-content: center;
 }
 
 .movie {
@@ -237,6 +245,8 @@ input {
 }
 
 .genre {
+    margin-bottom:2px;
+    margin-top:2px;
     display: inline-block;
     margin-right: 10px;
     background-color: var(--secondary-button-color);
@@ -316,8 +326,12 @@ input {
 
 .default-movie-container {
     display:grid;
-    grid-template-columns: repeat(auto-fit, minmax(440px, 1fr));
+    grid-template-columns: repeat(auto-fit, minmax(420px, 1fr));
     gap:15px; 
+    align-content: center;
+    justify-items: center;
+    align-items: stretch;
+    justify-content: center;
 }
 
 #fetchButton{
@@ -495,6 +509,17 @@ nav a:focus {
 }
 
 /* Responsive styles */
+
+@media (max-width:950px){
+    .default-movie-container{
+        grid-template-columns: 1fr 1fr;
+    }
+    
+    .default-movie-container img {
+        max-width:30vw;
+    }
+}
+
 @media (max-width: 768px) {
     .searchMovies input {
         max-width:90vw;
@@ -533,6 +558,15 @@ nav a:focus {
         padding:1em;
         min-width:60px;
     }
+
+    .default-movie-container{
+        grid-template-columns: 1fr;
+    }
+
+    .default-movie-container img {
+        max-width:60vw;
+        max-height:40vh;
+    }
 }
 
 @media (min-width:1200px) {
@@ -545,5 +579,33 @@ nav a:focus {
         margin: 0 auto;
         max-width:1200px;
     }
+
+    .default-movie-container{
+        grid-template-columns: 1fr 1fr 1fr;
+    }
+
+    .default-movie-container img {
+        max-width:300px;
+    }
 }
 
+@media (min-width:1300px) {
+    .dataContainer {
+        max-width: 60vw;
+        margin: 0 auto;
+    }
+
+    .movieFetchSection {
+        margin: 0 auto;
+        max-width:60vw;
+    }
+
+    .default-movie-container{
+        grid-template-columns: repeat(auto-fit, minmax(420px, 1fr));
+    }
+
+    .default-movie-container img {
+        max-width:40vw;
+        max-height:40vh;
+    }
+}

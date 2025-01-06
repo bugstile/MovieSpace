@@ -13,12 +13,14 @@ clearSearchResultsButton.addEventListener('click', clearSearchResults);
 searchButton.addEventListener('click', (event => {
     event.preventDefault(); // Prevent default form submission
     searchInput.focus();
+    resetSearchedMovie();
 }));
 
 searchForm.addEventListener('submit', (event) => {
     event.preventDefault(); // Prevent default form submission
     handleSearch(); 
     searchInput.focus();
+    resetSearchedMovie();
 });
 
 // Handle search on pressing Enter key
@@ -26,6 +28,7 @@ searchInput.addEventListener('keydown', (event) => {
     if (event.key === 'Enter') {
         handleSearch();
         searchInput.focus();
+        resetSearchedMovie();
     }
 });
 
@@ -34,6 +37,7 @@ searchForm.addEventListener('submit', (event) => {
     event.preventDefault(); // Prevent default form submission
     handleSearch(); 
     searchInput.focus();
+    resetSearchedMovie()
 });
 
 async function init() {
@@ -55,6 +59,7 @@ function setupSearch() {
             const query = searchInput.value;
             if (query) {
                 fetchMovieByTitle(query); // Call your fetch function
+                resetSearchedMovie();
             } else {
                 clearSearchResults(); // Clear results if input is empty
             }
@@ -62,8 +67,9 @@ function setupSearch() {
     });
 }
 
-// Call setupSearch on page load or when your input is ready
-
+function resetSearchedMovie(){
+    document.getElementById('searchedMovie').innerHTML = '';
+}
 
 async function fetchWithAuth(url) {
     const response = await fetch(url, {

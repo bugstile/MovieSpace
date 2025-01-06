@@ -12,7 +12,7 @@
     --text-color: #f1efef;
     --background-color: #010409;
     --secondary-button-color:#8B80F9;
-    --secondary-button-text-color:var(--text-color);
+    --secondary-button-text-color:var(--background-color);
     --secondary-button-hover-color:#5E50F7;
     --secondary-button-hover-text-color:white;
     --primary-button-color:#FFC31F;
@@ -231,7 +231,7 @@ input {
 }
 
 .movie h2 {
-    font-size: 1.8em;
+    font-size: 1.4em;
     color:var(--primary-button-color);
 }
 
@@ -317,11 +317,14 @@ input {
     transform: scale(1.05); 
 }
 
-#pagination {
+.pagination {
     display: flex;
-    justify-content: center; 
-    flex-wrap: wrap; 
+    flex-wrap: wrap;
     margin-top: 20px;
+    justify-content: center;
+    align-items: center;
+    align-content: center;
+    flex-direction: row;
 }
 
 .default-movie-container {
@@ -344,8 +347,8 @@ input {
     cursor: pointer;
     border: none;
     border-radius: 5px;
-    background-color: #007bff;
-    color: white;
+    background-color: var(--secondary-button-color);
+    color: var(--secondary-button-text-color);
     transition: background-color 0.3s, transform 0.2s;
     min-width:50px;
     padding:1em;
@@ -353,12 +356,13 @@ input {
 }
 
 .page-button:hover:not(:disabled) {
-    background-color: #0056b3; 
+    background-color: var(--secondary-button-hover-color); 
     transform: translateY(-1px); 
 }
 
 .page-button:disabled {
-    background-color: #ccc; 
+    background-color: #3A29F5; 
+    color:var(--text-color);
     cursor: not-allowed;
 }
 
@@ -510,7 +514,7 @@ nav a:focus {
 
 /* Responsive styles */
 
-@media (max-width:950px){
+@media (max-width:1200px) {
     .default-movie-container{
         grid-template-columns: 1fr 1fr;
     }
@@ -589,19 +593,20 @@ nav a:focus {
     }
 }
 
-@media (min-width:1300px) {
+@media (min-width:1500px) {
+
     .dataContainer {
-        max-width: 60vw;
+        max-width: 1500px;
         margin: 0 auto;
     }
 
     .movieFetchSection {
         margin: 0 auto;
-        max-width:60vw;
+        max-width:1500px;
     }
 
     .default-movie-container{
-        grid-template-columns: repeat(auto-fit, minmax(420px, 1fr));
+        grid-template-columns: repeat(auto-fit, minmax(380px, 1fr));
     }
 
     .default-movie-container img {

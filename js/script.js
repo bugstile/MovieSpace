@@ -104,7 +104,6 @@ function saveToFavorites(movie) {
     let favorites = JSON.parse(localStorage.getItem('favoriteMovies')) || [];
     
     if (!favorites.some(fav => fav.id === movie.id)) {
-        console.log(movie);
         favorites.push({
             id: movie.id,
             title: movie.title,
@@ -115,7 +114,6 @@ function saveToFavorites(movie) {
             genres: movie.genres
         });
 
-        console.log(JSON.stringify(favorites));
         localStorage.setItem('favoriteMovies', JSON.stringify(favorites));
         showToast(`${movie.title} has been added to favorites!`);
     } else {
@@ -278,7 +276,6 @@ function renderSearchResults(results) {
     const messageDiv = document.createElement('div');
     messageDiv.setAttribute('class', 'resultsTextContainer')
 
-    console.log(results);
 
     // Check if there are results
     if (results.results.length === 0) {
@@ -297,7 +294,6 @@ function renderSearchResults(results) {
     totalPagesText.setAttribute('class', 'resultText');
     totalResultsText.setAttribute('class', 'resultText');
     
-    console.log(results);
     displayingResultLength.innerHTML = `Displaying results: <span class="highlight-text-color">${results.results.length}</span>`;
     totalPagesText.innerHTML = `Total Pages: <span class="highlight-text-color">${results.total_pages}</span>`;
     totalResultsText.innerHTML = `Total Results: <span class="highlight-text-color">${results.total_results}</span>`;
@@ -378,7 +374,6 @@ function renderMovies(movies) {
                 genres: Array.from(movieElement.querySelectorAll('.genre')).map(genre => genre.textContent) // Extract genres
             };
 
-            console.log('Saving movie:', movie); // Log for debugging
 
             saveToFavorites(movie); // Call the function to save to localStorage
         });

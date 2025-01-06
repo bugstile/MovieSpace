@@ -121,23 +121,6 @@ function saveToFavorites(movie) {
     }
 }
 
-// Function to handle button click
-document.querySelectorAll('.add-to-favorites').forEach(button => {
-    button.addEventListener('click', (event) => {
-        const movieId = event.target.getAttribute('data-movie-id');
-        const movieTitle = event.target.closest('.movie').querySelector('h2').textContent;
-        
-        // Create movie object
-        const movie = {
-            id: movieId,
-            title: movieTitle,
-            // Add more properties if needed, like overview, release date, etc.
-        };
-
-        saveToFavorites(movie);
-    });
-});
-
 function resetSearchedMovie(){
     document.getElementById('searchedMovie').innerHTML = '';
 }
@@ -352,6 +335,25 @@ function clearSearchResults() {
 function renderMovie(movie) {
     const contentDiv = document.getElementById('searchedMovie');
     contentDiv.innerHTML = createMovieHTML(movie);
+    document.querySelectorAll('.add-to-favorites').forEach(button => {
+        button.addEventListener('click', (event) => {
+            const movieElement = event.target.closest('.movie'); // Get the closest movie element
+
+            // Create movie object with all properties
+            const movie = {
+                id: event.target.getAttribute('data-movie-id'),
+                title: movieElement.querySelector('h2').textContent,
+                overview: movieElement.querySelector('p:nth-of-type(1)').textContent.split(': ')[1], // Overview
+                release_date: movieElement.querySelector('p:nth-of-type(2)').textContent.split(': ')[1], // Release date
+                vote_average: movieElement.querySelector('p:nth-of-type(3)').textContent.split(': ')[1].split(' ')[0], // Vote average
+                poster_path: movieElement.querySelector('.img-movie-highlight').src, // Image source
+                genres: Array.from(movieElement.querySelectorAll('.genre')).map(genre => genre.textContent) // Extract genres
+            };
+
+
+            saveToFavorites(movie); // Call the function to save to localStorage
+        });
+    });
 }
 
 function renderMovies(movies) {
@@ -381,6 +383,7 @@ function renderMovies(movies) {
 }
 
 function createMovieHTML(movie) {
+    console.log('yeah!!');
     const genresList = movie.genre_ids.map(id => `<span class="genre">${genreMap[id]}</span>`).join('');
     
     const posterSrc = movie.poster_path 

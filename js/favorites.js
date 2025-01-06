@@ -17,7 +17,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 <div class="img-container">
                     <img src="${movie.poster_path ? movie.poster_path : '../img/sad-outline.svg'}" alt="${movie.title}">
                 </div>
-                <h2>${movie.title} (${movie.release_date.split('-')[0]})</h2>
+                <h2>${movie.title}</h2>
                 <p><strong>Overview:</strong> ${movie.overview}</p>
                 <p><strong>Release Date:</strong> ${movie.release_date}</p>
                 <p><strong>Vote Average:</strong> ${movie.vote_average}</p>
@@ -63,7 +63,13 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Clear all favorites
     document.getElementById('clearFavorites').addEventListener('click', () => {
+        // Clear the favorites from localStorage
         localStorage.removeItem('favoriteMovies');
-        loadFavorites(); // Reload favorites
+        
+        // Clear the UI
+        favoritesContainer.innerHTML = ''; // Clear the favorites container
+
+        // Optionally show a message
+        document.getElementById('errorMessage').innerHTML = '<p>No favorite movies found.</p>';
     });
 });

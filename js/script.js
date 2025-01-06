@@ -132,26 +132,6 @@ function renderPagination() {
     const totalPages = Math.ceil(totalResults / 20); 
     const visiblePages = 5; // Display this many pagination buttons
 
-    // First button (only if totalPages > visiblePages)
-    if (searchPage > 1 && totalPages > visiblePages) {
-        const firstButton = document.createElement('button');
-        firstButton.textContent = 'First';
-        firstButton.classList.add('page-button');
-        firstButton.classList.add('first-button');
-        firstButton.addEventListener('click', () => fetchMovieByTitle(document.getElementById('searchInput').value, 1));
-        paginationDiv.appendChild(firstButton);
-    }
-
-    // Previous button
-    if (searchPage > 1) {
-        const prevButton = document.createElement('button');
-        prevButton.textContent = 'Previous';
-        prevButton.classList.add('page-button');
-        prevButton.classList.add('previous-button');
-        prevButton.addEventListener('click', () => fetchMovieByTitle(document.getElementById('searchInput').value, searchPage - 1));
-        paginationDiv.appendChild(prevButton);
-    }
-
     // Calculate start and end page numbers
     let startPage = Math.max(1, searchPage - Math.floor(visiblePages / 2));
     let endPage = Math.min(totalPages, startPage + visiblePages - 1);
@@ -172,26 +152,6 @@ function renderPagination() {
         }
 
         paginationDiv.appendChild(pageButton);
-    }
-
-    // Next button
-    if (searchPage < totalPages) {
-        const nextButton = document.createElement('button');
-        nextButton.textContent = 'Next';
-        nextButton.classList.add('page-button');
-        nextButton.classList.add('next-button');
-        nextButton.addEventListener('click', () => fetchMovieByTitle(document.getElementById('searchInput').value, searchPage + 1));
-        paginationDiv.appendChild(nextButton);
-    }
-
-    // Last button (only if totalPages > visiblePages)
-    if (searchPage < totalPages && totalPages > visiblePages) {
-        const lastButton = document.createElement('button');
-        lastButton.textContent = 'Last';
-        lastButton.classList.add('page-button');
-        lastButton.classList.add('last-button');
-        lastButton.addEventListener('click', () => fetchMovieByTitle(document.getElementById('searchInput').value, totalPages));
-        paginationDiv.appendChild(lastButton);
     }
 }
 
@@ -223,9 +183,9 @@ function renderSearchResults(results) {
     totalResultsText.setAttribute('class', 'resultText');
     
     console.log(results);
-    displayingResultLength.textContent = `Displaying results: ${results.results.length}`;
-    totalPagesText.textContent = `Total Pages: ${results.total_pages}`;
-    totalResultsText.textContent = `Total Results: ${results.total_results}`;
+    displayingResultLength.innerHTML = `Displaying results: <span class="highlight-text-color">${results.results.length}</span>`;
+    totalPagesText.innerHTML = `Total Pages: <span class="highlight-text-color">${results.total_pages}</span>`;
+    totalResultsText.innerHTML = `Total Results: <span class="highlight-text-color">${results.total_results}</span>`;
 
     
     messageDiv.appendChild(displayingResultLength);

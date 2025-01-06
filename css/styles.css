@@ -283,6 +283,8 @@ input {
     gap: 10px;
     justify-content: flex-end;
     align-items: center;
+    padding-left:5vw;
+    padding-right:5vw;
 }
 
 .gallery {
@@ -315,11 +317,15 @@ input {
 .pagination {
     display: flex;
     flex-wrap: wrap;
-    margin-top: 20px;
     justify-content: center;
     align-items: center;
     align-content: center;
     flex-direction: row;
+    max-width:90vw;
+    margin:0 auto;
+    margin-top:20px;
+    padding-left:5vw;
+    padding-right:5vw;
 }
 
 .default-movie-container {
@@ -571,7 +577,7 @@ nav a:focus {
         padding: 15px;
     }
 
-    #pagination {
+    .pagination {
         align-items: center;
         display: flex;
         flex-direction: row;

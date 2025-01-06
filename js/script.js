@@ -383,7 +383,6 @@ function renderMovies(movies) {
 }
 
 function createMovieHTML(movie) {
-    console.log('yeah!!');
     const genresList = movie.genre_ids.map(id => `<span class="genre">${genreMap[id]}</span>`).join('');
     
     const posterSrc = movie.poster_path 

@@ -25,7 +25,7 @@ https://www.figma.com/design/H4Owu2uuUfxBhe9IK0UUfI/Movie-Space?node-id=0-1&m=de
 För att köra projektet lokalt, följ dessa steg:
 
 1. Clone repository, rekommenderas inuti Visual Studio Code.
-   ```bash
+   ```
    git clone https://github.com/bugstile/MovieSpace.git
    ```
 

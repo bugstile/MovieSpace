@@ -16,13 +16,6 @@ searchButton.addEventListener('click', (event => {
     resetSearchedMovie();
 }));
 
-searchForm.addEventListener('submit', (event) => {
-    event.preventDefault(); // Prevent default form submission
-    handleSearch(); 
-    searchInput.focus();
-    resetSearchedMovie();
-});
-
 // Handle search on pressing Enter key
 searchInput.addEventListener('keydown', (event) => {
     if (event.key === 'Enter') {
@@ -53,15 +46,15 @@ let debounceTimeout;
 function setupSearch() {
     // Add input event listener to the search input
     searchInput.addEventListener('input', () => {
-        clearTimeout(debounceTimeout); // Clear the previous timeout
+        clearTimeout(debounceTimeout); 
 
         debounceTimeout = setTimeout(() => {
             const query = searchInput.value;
             if (query) {
-                fetchMovieByTitle(query); // Call your fetch function
+                fetchMovieByTitle(query); 
                 resetSearchedMovie();
             } else {
-                clearSearchResults(); // Clear results if input is empty
+                clearSearchResults(); 
             }
         }, 300); // 300ms delay
     });
@@ -109,19 +102,19 @@ async function fetchMovies(page = 1) {
 
 // Function to handle the button click for fetching the next page
 function fetchNextPage() {
-    currentPage++; // Increment the current page
-    fetchMovies(currentPage); // Fetch movies for the new page
+    currentPage++; 
+    fetchMovies(currentPage); 
 }
 
 let currentPage = 1; // Track the current page
 let totalResults = 0; // Store total results
 
 async function fetchMovieByTitle(title, page = 1) {
-    const apiUrl = `https://api.themoviedb.org/3/search/movie?include_adult=false&language=en-US&page=${page}&query=${encodeURIComponent(title)}`;
+    searchPage = page; // Update the search page variable
+    const apiUrl = `https://api.themoviedb.org/3/search/movie?include_adult=false&language=en-US&page=${searchPage}&query=${encodeURIComponent(title)}`;
     try {
         const data = await fetchWithAuth(apiUrl);
         totalResults = data.total_results; 
-        currentPage = page; 
         renderSearchResults(data); 
         renderPagination(); 
     } catch (error) {
@@ -130,28 +123,75 @@ async function fetchMovieByTitle(title, page = 1) {
     }
 }
 
+let searchPage = 1; // Track the current page for search results
+
 function renderPagination() {
     const paginationDiv = document.getElementById('pagination');
     paginationDiv.innerHTML = ''; 
 
     const totalPages = Math.ceil(totalResults / 20); 
+    const visiblePages = 5; // Display this many pagination buttons
 
-    for (let i = 1; i <= totalPages; i++) {
+    // First button (only if totalPages > visiblePages)
+    if (searchPage > 1 && totalPages > visiblePages) {
+        const firstButton = document.createElement('button');
+        firstButton.textContent = 'First';
+        firstButton.classList.add('page-button');
+        firstButton.classList.add('first-button');
+        firstButton.addEventListener('click', () => fetchMovieByTitle(document.getElementById('searchInput').value, 1));
+        paginationDiv.appendChild(firstButton);
+    }
+
+    // Previous button
+    if (searchPage > 1) {
+        const prevButton = document.createElement('button');
+        prevButton.textContent = 'Previous';
+        prevButton.classList.add('page-button');
+        prevButton.classList.add('previous-button');
+        prevButton.addEventListener('click', () => fetchMovieByTitle(document.getElementById('searchInput').value, searchPage - 1));
+        paginationDiv.appendChild(prevButton);
+    }
+
+    // Calculate start and end page numbers
+    let startPage = Math.max(1, searchPage - Math.floor(visiblePages / 2));
+    let endPage = Math.min(totalPages, startPage + visiblePages - 1);
+
+    if (endPage - startPage < visiblePages - 1) {
+        startPage = Math.max(1, endPage - visiblePages + 1);
+    }
+
+    // Create page buttons
+    for (let i = startPage; i <= endPage; i++) {
         const pageButton = document.createElement('button');
         pageButton.textContent = i;
         pageButton.classList.add('page-button');
-        
+        pageButton.addEventListener('click', () => fetchMovieByTitle(document.getElementById('searchInput').value, i));
 
-        pageButton.addEventListener('click', () => {
-            fetchMovieByTitle(document.getElementById('searchInput').value, i);
-        });
-
- 
-        if (i === currentPage) {
-            pageButton.disabled = true;
+        if (i === searchPage) {
+            pageButton.disabled = true; // Disable the current page button
         }
 
         paginationDiv.appendChild(pageButton);
+    }
+
+    // Next button
+    if (searchPage < totalPages) {
+        const nextButton = document.createElement('button');
+        nextButton.textContent = 'Next';
+        nextButton.classList.add('page-button');
+        nextButton.classList.add('next-button');
+        nextButton.addEventListener('click', () => fetchMovieByTitle(document.getElementById('searchInput').value, searchPage + 1));
+        paginationDiv.appendChild(nextButton);
+    }
+
+    // Last button (only if totalPages > visiblePages)
+    if (searchPage < totalPages && totalPages > visiblePages) {
+        const lastButton = document.createElement('button');
+        lastButton.textContent = 'Last';
+        lastButton.classList.add('page-button');
+        lastButton.classList.add('last-button');
+        lastButton.addEventListener('click', () => fetchMovieByTitle(document.getElementById('searchInput').value, totalPages));
+        paginationDiv.appendChild(lastButton);
     }
 }
 
@@ -231,11 +271,11 @@ function clearSearchResults() {
     document.getElementById('searchedMovie').innerHTML = '';
     console.log('Clearing search results');
     const searchInput = document.getElementById('searchInput');
-    searchInput.removeAttribute('required'); // Temporarily remove the required attribute
-    searchInput.value = ''; // Clear the input
-    document.getElementById('searchResults').innerHTML = ''; // Clear the search results
-    document.getElementById('pagination').innerHTML = ''; // Clear the pagination
-    searchInput.setAttribute('required', ''); // Re-add the required attribute
+    searchInput.removeAttribute('required'); 
+    searchInput.value = ''; 
+    document.getElementById('searchResults').innerHTML = '';
+    document.getElementById('pagination').innerHTML = ''; 
+    searchInput.setAttribute('required', '');
 }
 
 function renderMovie(movie) {

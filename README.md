@@ -42,7 +42,8 @@ För att köra projektet lokalt, följ dessa steg:
 
 # Kortfattad förklaring av hur jag uppfyllt JSON-, HTTP/HTTPS-, asynkronitets- och UX/UI-kraven.
 
-- Jag använder async och await för fetch, jag använder 
+- Jag använder async och await för fetch, API länken är https alltid, data laddas in dynamiskt på hemsidan.
+- UX/UI-kraven uppfyller jag med rätt bra öga för design.
 
 # Beskriv hur jag hämtar data från API:et (Vilket API? URL/enpoint, parametrar, API nyckel?).
 

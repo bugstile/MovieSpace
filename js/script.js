@@ -5,7 +5,7 @@ let genreMap = {};
 const searchInput = document.getElementById('searchInput');
 const searchButton = document.getElementById('searchButton');
 const searchForm = document.getElementById('searchForm'); // Reference to the form
-document.getElementById('fetchButton').addEventListener('click', fetchMovies);
+document.getElementById('fetchButton').addEventListener('click', fetchNextPage);
 
 // Handle search on button click
 searchButton.addEventListener('click', handleSearch);
@@ -28,7 +28,7 @@ searchForm.addEventListener('submit', (event) => {
 
 async function init() {
     await fetchGenres();
-    await fetchMovies();
+    await fetchMovies(currentPage);
     setupSearch();
 }
 
@@ -81,14 +81,20 @@ async function fetchGenres() {
     }
 }
 
-async function fetchMovies() {
-    const apiUrl = 'https://api.themoviedb.org/3/discover/movie?include_adult=false&include_video=false&language=en-US&page=1&sort_by=popularity.desc';
+async function fetchMovies(page = 1) {
+    const apiUrl = `https://api.themoviedb.org/3/discover/movie?include_adult=false&include_video=false&language=en-US&page=${page}&sort_by=popularity.desc`;
     try {
         const data = await fetchWithAuth(apiUrl);
-        renderMovies(data.results.slice(0, 10));
+        renderMovies(data.results); // Render all results without slicing
     } catch (error) {
         console.error('Error fetching movie data:', error);
     }
+}
+
+// Function to handle the button click for fetching the next page
+function fetchNextPage() {
+    currentPage++; // Increment the current page
+    fetchMovies(currentPage); // Fetch movies for the new page
 }
 
 let currentPage = 1; // Track the current page
@@ -237,7 +243,7 @@ function createMovieHTML(movie) {
     return `
         <div class="movie">
             <h2>${movie.title} (${movie.release_date.split('-')[0]})</h2>
-            <img src="${posterSrc}" alt="${movie.title}">
+            <img class="img-movie-highlight" src="${posterSrc}" alt="${movie.title}">
             <p><strong>Overview:</strong> ${movie.overview}</p>
             <p><strong>Release Date:</strong> ${movie.release_date}</p>
             <p><strong>Vote Average:</strong> ${movie.vote_average} (${movie.vote_count} votes)</p>

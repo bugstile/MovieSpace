@@ -3,6 +3,8 @@ body {
     margin: 20px;
     background-color: #f9f9f9;
     color: #333;
+    margin:0;
+    padding:0;
 }
 
 header {
@@ -171,6 +173,16 @@ footer {
     justify-content: center; 
     flex-wrap: wrap; 
     margin-top: 20px;
+}
+
+.default-movie-container {
+    display:grid;
+    grid-template-columns: repeat(auto-fit, minmax(440px, 1fr));
+    gap:15px; 
+}
+
+#fetchButton{
+    margin-bottom:15px;
 }
 
 .page-button {

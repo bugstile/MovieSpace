@@ -52,6 +52,11 @@ h2 {
     transform: translateY(-1px);
 }
 
+.button:focus,
+.page-button:focus {
+    outline: 2px solid #0056b3; /* Change to your highlight color */
+}
+
 .error {
     color: red;
     margin-top: 10px;
@@ -109,11 +114,27 @@ footer {
     color: #777;
 }
 
+.resultsTextContainer {
+    display:flex;
+}
+
+.resultText {
+    padding:10px;
+}
+
 #searchResults {
     display: flex;
     flex-wrap: wrap;
     gap: 10px;
     justify-content: center; 
+}
+
+.gallery {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 15px;
+    justify-content: center; 
+    align-content: center;
 }
 
 .result-image-container {
@@ -160,7 +181,10 @@ footer {
     border-radius: 5px;
     background-color: #007bff;
     color: white;
-    transition: background-color 0.3s, transform 0.2s; 
+    transition: background-color 0.3s, transform 0.2s;
+    min-width:50px;
+    padding:1em;
+    margin:0.2em;
 }
 
 .page-button:hover:not(:disabled) {
@@ -192,13 +216,14 @@ footer {
         align-items: center;
         display: flex;
         flex-direction: row;
-        flex-wrap: nowrap;
+        flex-wrap: wrap;
         align-content: center;
         justify-content: space-between;
     }
 
     .page-button {
-        padding:2em;
+        padding:1em;
+        min-width:60px;
     }
 }
 

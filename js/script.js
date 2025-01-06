@@ -5,9 +5,13 @@ let genreMap = {};
 const searchInput = document.getElementById('searchInput');
 const searchButton = document.getElementById('searchButton');
 const searchForm = document.getElementById('searchForm'); // Reference to the form
+document.getElementById('fetchButton').addEventListener('click', fetchMovies);
 
 // Handle search on button click
 searchButton.addEventListener('click', handleSearch);
+
+const clearSearchResultsButton = document.getElementById('clearSearchResults');
+clearSearchResultsButton.addEventListener('click', clearSearchResults);
 
 // Handle search on pressing Enter key
 searchInput.addEventListener('keydown', (event) => {
@@ -22,14 +26,34 @@ searchForm.addEventListener('submit', (event) => {
     handleSearch(); 
 });
 
-document.getElementById('fetchButton').addEventListener('click', fetchMovies);
-
 async function init() {
     await fetchGenres();
     await fetchMovies();
+    setupSearch();
 }
 
 init();
+
+let debounceTimeout;
+
+function setupSearch() {
+    // Add input event listener to the search input
+    searchInput.addEventListener('input', () => {
+        clearTimeout(debounceTimeout); // Clear the previous timeout
+
+        debounceTimeout = setTimeout(() => {
+            const query = searchInput.value;
+            if (query) {
+                fetchMovieByTitle(query); // Call your fetch function
+            } else {
+                clearSearchResults(); // Clear results if input is empty
+            }
+        }, 300); // 300ms delay
+    });
+}
+
+// Call setupSearch on page load or when your input is ready
+
 
 async function fetchWithAuth(url) {
     const response = await fetch(url, {
@@ -76,7 +100,7 @@ async function fetchMovieByTitle(title, page = 1) {
         const data = await fetchWithAuth(apiUrl);
         totalResults = data.total_results; 
         currentPage = page; 
-        renderSearchResults(data.results); 
+        renderSearchResults(data); 
         renderPagination(); 
     } catch (error) {
         console.error('Error fetching movie data:', error);
@@ -113,30 +137,65 @@ function renderSearchResults(results) {
     const resultsDiv = document.getElementById('searchResults');
     resultsDiv.innerHTML = ''; 
 
-    const totalResultsText = document.createElement('p');
-    totalResultsText.textContent = `Total results: ${results.length}`;
-    resultsDiv.appendChild(totalResultsText);
+    // Create a div for the results message
+    const messageDiv = document.createElement('div');
+    messageDiv.setAttribute('class', 'resultsTextContainer')
 
-    results.forEach(movie => {
+    console.log(results);
+
+    // Check if there are results
+    if (results.results.length === 0) {
+        const noResultsText = document.createElement('p');
+        noResultsText.textContent = 'No results found.';
+        messageDiv.appendChild(noResultsText);
+        resultsDiv.appendChild(messageDiv);
+        return;
+    }
+
+    const displayingResultLength = document.createElement('p');
+    const totalPagesText = document.createElement('p');
+    const totalResultsText = document.createElement('p');
+
+    displayingResultLength.setAttribute('class', 'resultText');
+    totalPagesText.setAttribute('class', 'resultText');
+    totalResultsText.setAttribute('class', 'resultText');
+    
+    console.log(results);
+    displayingResultLength.textContent = `Displaying results: ${results.results.length}`;
+    totalPagesText.textContent = `Total Pages: ${results.total_pages}`;
+    totalResultsText.textContent = `Total Results: ${results.total_results}`;
+
+    
+    messageDiv.appendChild(displayingResultLength);
+    messageDiv.appendChild(totalPagesText);
+    messageDiv.appendChild(totalResultsText)
+    resultsDiv.appendChild(messageDiv);
+
+    const galleryDiv = document.createElement('div');
+
+    galleryDiv.setAttribute('class', 'gallery');
+
+    results.results.forEach(movie => {
         const imageContainer = document.createElement('div');
         const img = document.createElement('img');
 
-        if(movie.poster_path != null){
-            img.src = `https://image.tmdb.org/t/p/w500${movie.poster_path}`;
-        } else {
-            img.src = '../img/sad-outline.svg';
-        }
-        
+        imageContainer.setAttribute('class', 'small-gallery-img');
+
+        img.src = movie.poster_path 
+            ? `https://image.tmdb.org/t/p/w500${movie.poster_path}` 
+            : '../img/sad-outline.svg';
 
         img.alt = movie.title;
         img.classList.add('result-image');
         img.addEventListener('click', () => {
-            renderMovie(movie); // Show more info on click
+            renderMovie(movie); 
         });
 
         imageContainer.appendChild(img);
-        resultsDiv.appendChild(imageContainer);
+        galleryDiv.appendChild(imageContainer);
     });
+
+    resultsDiv.appendChild(galleryDiv);
 }
 
 function handleSearch() {
@@ -148,7 +207,13 @@ function handleSearch() {
 
 function clearSearchResults() {
     document.getElementById('searchedMovie').innerHTML = '';
-    document.getElementById('searchResults').innerHTML = '';
+    console.log('Clearing search results');
+    const searchInput = document.getElementById('searchInput');
+    searchInput.removeAttribute('required'); // Temporarily remove the required attribute
+    searchInput.value = ''; // Clear the input
+    document.getElementById('searchResults').innerHTML = ''; // Clear the search results
+    document.getElementById('pagination').innerHTML = ''; // Clear the pagination
+    searchInput.setAttribute('required', ''); // Re-add the required attribute
 }
 
 function renderMovie(movie) {
@@ -181,6 +246,7 @@ function createMovieHTML(movie) {
     `;
 }
 
+//get one movie, deprecated right now
 async function fetchMovieData(movieId) {
     const apiUrl = `https://api.themoviedb.org/3/movie/${movieId}`;
     try {

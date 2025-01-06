@@ -7,16 +7,25 @@ const searchButton = document.getElementById('searchButton');
 const searchForm = document.getElementById('searchForm'); // Reference to the form
 document.getElementById('fetchButton').addEventListener('click', fetchNextPage);
 
-// Handle search on button click
-searchButton.addEventListener('click', handleSearch);
-
 const clearSearchResultsButton = document.getElementById('clearSearchResults');
 clearSearchResultsButton.addEventListener('click', clearSearchResults);
+
+searchButton.addEventListener('click', (event => {
+    event.preventDefault(); // Prevent default form submission
+    searchInput.focus();
+}));
+
+searchForm.addEventListener('submit', (event) => {
+    event.preventDefault(); // Prevent default form submission
+    handleSearch(); 
+    searchInput.focus();
+});
 
 // Handle search on pressing Enter key
 searchInput.addEventListener('keydown', (event) => {
     if (event.key === 'Enter') {
         handleSearch();
+        searchInput.focus();
     }
 });
 
@@ -24,6 +33,7 @@ searchInput.addEventListener('keydown', (event) => {
 searchForm.addEventListener('submit', (event) => {
     event.preventDefault(); // Prevent default form submission
     handleSearch(); 
+    searchInput.focus();
 });
 
 async function init() {

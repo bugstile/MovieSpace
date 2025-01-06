@@ -1,78 +1,212 @@
-body {
-    font-family: Arial, sans-serif;
-    margin: 20px;
-    background-color: #f9f9f9;
-    color: #333;
+/* Font-family importerad via .ttf */
+@font-face {
+    font-family: "Poppins";
+    src: url("../fonts/Poppins-light.ttf") format("truetype");
+    font-weight: normal;
+    font-style: normal;
+}
+
+/* Färg-schema för hemsidan */
+:root {
+    --lighter-background-color: #0d1117;
+    --text-color: #f1efef;
+    --background-color: #010409;
+    --secondary-button-color:#8B80F9;
+    --secondary-button-text-color:var(--text-color);
+    --secondary-button-hover-color:#5E50F7;
+    --secondary-button-hover-text-color:white;
+    --primary-button-color:#FFC31F;
+    --primary-button-text-color:black;
+    --primary-button-hover-color:#CC9600;
+    --primary-button-hover-text-color:white;
+    --input-background-color: var(--text-color);
+    --input-text-color:var(--background-color);
+    --input-text-border-hover-color:var(--primary-button-color);
+    --movie-background-color:var(--lighter-background-color);
+    --movie-text-color:var(--text-color);
+}
+
+html {
     margin:0;
     padding:0;
 }
 
+ul {
+    margin: 0;
+    padding: 0;
+}
+
+
+li {
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    font-family: "Poppins";
+    background-color: var(--background-color);
+    color: var(--text-color);
+    line-height: clamp(1.6rem, 2.5vw, 2rem);
+    letter-spacing:clamp(0.001rem, 2vw, 0.1rem);
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    margin:0;
+    padding:0;
+}
+
+main {
+    font-size: clamp(1rem, 3vw, 1.2rem);
+    flex-grow: 1;
+}
+
 header {
     text-align: center;
-    margin-bottom: 30px;
+    background-color: var(--lighter-background-color);
+    color: var(--text-color);
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    padding: 100px;
+    overflow: hidden;
+}
+
+.highlight-text-color{
+    color:var(--primary-button-color);
+}
+
+.highlight-secondary-text-color {
+    color:var(--secondary-button-color);
 }
 
 h1 {
-    font-size: 2.5em;
-    color: #4a4a4a;
+    margin: 0;
+    padding: 0;
+    padding: 5px;
+    line-height: clamp(3rem, 3vw, 3.8rem);
+    letter-spacing: 0.15rem;
+    font-size: clamp(2.2rem, 3vw, 3.2rem);
+    font-weight:bold;
+
+    padding-bottom:20px;
 }
 
 h2 {
-    font-size: 1.5em;
-    color: #7a7a7a;
+    line-height: clamp(2.4rem, 4vw, 4.2rem);
+    letter-spacing: 0.15rem;
+    font-size: clamp(1.8rem, 3vw, 2.8rem);
+    font-weight:100;
 }
 
 .dataContainer {
-    max-width: 1200px;
-    margin: 0 auto;
+    
 }
 
 .searchMovies {
     text-align: center;
+    padding:0px;
+    margin:0px;
 }
 
-.searchMovies input {
-    padding: 10px;
-    width: 300px;
-    border: 1px solid #ccc;
+.searchMovies h2 {
+    padding-top:20px;
+    padding-bottom:20px;
+}
+
+.input {
+    padding-top: 10px;
+    padding-bottom:10px;
+    max-width:40vw;
+    min-width:300px;
+    background-color:var(--input-background-color);
+    border: 1px solid var(--input-background-color);
+    color: var(--input-text-color);
     border-radius: 5px;
+}
+
+.input:hover,.input:focus,.input:active,.input:target,.input:focus-visible {
+    border: 1px solid var(--input-text-border-hover-color);
+    border-color:var(--input-text-border-hover-color);
+}
+
+.input:focus-visible{
+    outline-offset: 0px;
+}
+
+.input:focus-visible {
+    outline: var(--input-text-border-hover-color) 1px solid;
 }
 
 .button {
     padding: 10px 15px;
     border: none;
     border-radius: 5px;
-    background-color: #007bff;
-    color: white;
     cursor: pointer;
     box-shadow: 0 2px 5px rgba(0, 123, 255, 0.2);
     transition: background-color 0.3s, transform 0.2s;
 }
 
 .button:hover {
-    background-color: #0056b3;
     transform: translateY(-1px);
 }
 
 .button:focus,
 .page-button:focus {
-    outline: 2px solid #0056b3; /* Change to your highlight color */
+    outline: 2px solid var(--primary-button-hover-color); /* Change to your highlight color */
+}
+
+.button-primary{
+    background-color: var(--primary-button-color);
+    color: var(--primary-button-text-color);
+}
+
+.button-primary:hover {
+    background-color: var(--primary-button-hover-color);
+}
+
+.button-secondary{
+    background-color: var(--secondary-button-color);
+    color: var(--secondary-button-text-color);
+}
+
+.button-secondary:hover {
+    background-color: var(--secondary-button-hover-color);
+}
+
+.form{
+    margin-bottom:50px;
+}
+
+input {
+    padding:0;
+    margin:0;
+    text-indent: 10px;
 }
 
 .error {
     color: red;
-    margin-top: 10px;
+    margin-bottom:10px;
+    margin-top:10px;
 }
 
 .movieFetchSection {
-    margin-top: 20px;
+    padding-top: 20px;
+    width: 90vw;
+    display: flex;
+    flex-direction: column;
+    align-content: center;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: center;
 }
 
 .movie {
-    border: 1px solid #ccc;
     padding: 20px;
-    margin-bottom: 20px;
-    background-color: white;
+    background-color:var(--movie-background-color);
+    color:var(--movie-text-color);
     border-radius: 8px;
     box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
     transition: box-shadow 0.2s;
@@ -80,6 +214,7 @@ h2 {
 
 .movie:hover {
     box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
+    /* background-color:#161D27; */
 }
 
 .movie img {
@@ -89,7 +224,7 @@ h2 {
 
 .movie h2 {
     font-size: 1.8em;
-    color: #333;
+    color:var(--primary-button-color);
 }
 
 .movie p {
@@ -98,22 +233,16 @@ h2 {
 
 .genres {
     list-style-type: none;
-    padding: 0;
+    padding: 0px;
 }
 
 .genre {
     display: inline-block;
     margin-right: 10px;
-    background-color: #e0e0e0;
-    padding: 5px;
+    background-color: var(--secondary-button-color);
+    color:var(--background-color);
+    padding:6px;
     border-radius: 5px;
-}
-
-footer {
-    text-align: center;
-    margin-top: 30px;
-    font-size: 0.9em;
-    color: #777;
 }
 
 .resultsTextContainer {
@@ -124,11 +253,21 @@ footer {
     padding:10px;
 }
 
+.small-gallery-img {
+    border: 1px solid var(--text-color);
+}
+
+.small-gallery-img img:hover {
+    border: 2px solid var(--primary-button-color);
+}
+
 #searchResults {
     display: flex;
     flex-wrap: wrap;
+    flex-direction: column;
     gap: 10px;
-    justify-content: center; 
+    justify-content: flex-end;
+    align-items: center;
 }
 
 .gallery {
@@ -209,15 +348,172 @@ footer {
     cursor: not-allowed;
 }
 
+
+
+/*Footer shamelessly copied from prior project!! Hej mandus!!*/
+
+footer {
+    position: relative;
+    background-color: var(--lighter-background-color);
+    min-height: 100px;
+    padding: 20px 50px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    flex: 1;
+    margin-top: 200px;
+    max-height:172px;
+}
+
+footer ul {
+    display: flex;
+}
+
+.footer p {
+    color: var(--text-color);
+    font-size: 1rem;
+    font-weight: 300;
+    text-align: center;
+}
+
+nav a {
+    color: var(--text-color);
+    text-decoration: none;
+}
+
+nav a:hover, 
+nav a:focus {
+    text-decoration: underline 0.1em;
+    text-underline-offset: 0.3em;
+}
+
+.icon-menu li, .menu li {
+    padding: 0.5em;
+}
+
+.icon-menu,
+.menu {
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-wrap: wrap;
+}
+  
+.icon-menu,
+.menu-item {
+    list-style: none;
+}
+  
+.icon-link {
+    font-size: 2rem;
+    color: var(--text-color);
+    display: inline-block;
+    transition: 0.5s;
+}
+
+.icon-link:hover, 
+.icon-link:focus {
+    transform: translateY(-10px);
+}
+
+.icon {
+    width: 32px;
+    height: 32px;
+    filter: invert(1);
+}
+  
+.menu-link {
+    font-size: 1.2rem;
+    color: var(--text-color);
+    display: inline-block;
+    text-decoration: none;  
+    font-weight: 300;
+}
+  
+.menu-link:hover,
+.menu-link:focus {
+    text-decoration: underline 0.1em;
+    text-underline-offset: 0.3em;
+}
+  
+.wave {
+    position: absolute;
+    top: -100px;
+    left: 0;
+    width: 100%;
+    height: 100px;
+    background-image: url('../img/wave.png');
+    background-size: 1000px 100px;
+}
+  
+.wave#wave1 {
+    z-index: 1000;
+    opacity: 1;
+    bottom: 0;
+    animation: animateWaves 4s linear infinite;
+}
+  
+.wave#wave2 {
+    z-index: 999;
+    opacity: 0.5;
+    bottom: 10px;
+    animation: animate 4s linear infinite;
+}
+  
+.wave#wave3 {
+    z-index: 1000;
+    opacity: 0.2;
+    bottom: 15px;
+    animation: animateWaves 3s linear infinite;
+}
+  
+.wave#wave4 {
+    z-index: 999;
+    opacity: 0.7;
+    bottom: 20px;
+    animation: animate 3s linear infinite;
+}
+
+@keyframes animateWaves {
+    0% {
+      background-position-x: 1000px;
+    }
+    100% {
+      background-position-x: 0px;
+    }
+}
+  
+@keyframes animate {
+    0% {
+      background-position-x: -1000px;
+    }
+    100% {
+      background-position-x: 0px;
+    }
+}
+
 /* Responsive styles */
 @media (max-width: 768px) {
     .searchMovies input {
-        width: 100%;
+        max-width:90vw;
+        min-width:80vw;
+        width:90vw;
+    }
+
+    .movieFetchSection {
+        margin: 0 auto;
+        max-width:1200px;
     }
 
     .button {
-        width: 100%;
+        width: 90vw;
         margin-top: 10px;
+    }
+
+    .btn-search{
+        padding:25px;
     }
 
     .movie {
@@ -236,6 +532,18 @@ footer {
     .page-button {
         padding:1em;
         min-width:60px;
+    }
+}
+
+@media (min-width:1200px) {
+    .dataContainer {
+        max-width: 1200px;
+        margin: 0 auto;
+    }
+
+    .movieFetchSection {
+        margin: 0 auto;
+        max-width:1200px;
     }
 }
 

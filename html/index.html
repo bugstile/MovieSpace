@@ -9,16 +9,16 @@
 <body>
     <header>
         <h1>Welcome to Movie Space</h1>
-        <h2>See movies, search and filter genres to find what to watch tonight</h2>
+        <h2>See movies, search and filter genres to find what to watch <span class="highlight-text-color">tonight</span></h2>
     </header>
     <main>
         <div class="dataContainer">
             <section class="searchMovies">
                 <h2>Search for a Movie</h2>
-                <form id="searchForm">
-                    <input type="text" id="searchInput" placeholder="Enter movie title" required>
-                    <button type="submit" class="button" id="searchButton">Search</button>
-                    <button type="button" class="button" id="clearSearchResults">Clear search</button>
+                <form id="searchForm" class="form">
+                    <input type="text" id="searchInput" class="input" placeholder="Enter movie title" required>
+                    <button type="submit" class="button button-primary btn-search" id="searchButton">Search</button>
+                    <button type="button" class="button button-secondary" id="clearSearchResults">Clear search</button>
                 </form>
                 <div class="error" id="errorMessage"></div>
                 <div id="searchedMovie"></div>
@@ -28,14 +28,51 @@
             </section>
             <section class="movieFetchSection">
                 <h3>Movies</h3>
-                <p>Displaying 20 popular movies</p>
-                <button class="button" id="fetchButton">Fetch More Movies!</button>
+                <p>Displaying <span class="highlight-text-color">20</span> popular movies</p>
+                <button class="button button-primary" id="fetchButton">Fetch More Movies!</button>
                 <div class="default-movie-container" id="content"></div>
             </section>
         </div>
     </main>
-    <footer>
-        <p>&copy; 2025 Movie Space. All rights reserved.</p>
+    <footer class="footer">
+        <div class="waves" alt="animation simulating a black sea">
+            <div class="wave" id="wave1"></div>
+            <div class="wave" id="wave2"></div>
+            <div class="wave" id="wave3"></div>
+            <div class="wave" id="wave4"></div>
+        </div>
+    <ul class="icon-menu">
+        <li class="icon-item">
+            <a class="icon-link" href="https://www.linkedin.com/in/sebastian-ritschewald-233618110/" title="Klicka för att nå min LinkedIn">
+                <img alt="linkedin länk logo" class="icon" aria-label="LinkedIn profil" title="Klicka för att nå min Linkedin" src="../img/logo-linkedin.svg"/>
+            </a>
+        </li>
+        <li class="icon-item">
+            <a class="icon-link" href="https://github.com/bugstile" title="Klicka för att nå min Github">
+                <img alt="github länk logo" class="icon" aria-label="Github profil" title="Klicka för att nå min Github" src="../img/logo-github.svg"/>
+            </a>
+        </li>
+        <li class="icon-item">
+            <a class="icon-link" href="https://instagram.com/sebbehmm" title="Klicka för att nå min Instagram" >
+                <img alt="instagram länk logo" class="icon" aria-label="LinkedIn profil" name="Klicka för att nå min Instagram" src="../img/logo-instagram.svg"/>
+            </a>
+        </li>
+    </ul>
+    <nav class="menu">
+        <ul>
+            <li class="menu-item">
+                <a class="menu-link" href="index.html" title="Gå till hemsidan">
+                    Hem
+                </a>
+            </li>
+            <li class="menu-item">
+                <a class="menu-link" href="contact.html" title="Gå till kontaktsidan">
+                    Kontakt
+                </a>
+            </li>
+        </ul>
+    </nav>
+        <p>&copy;2024 Sebastian Ritschewald</p>
     </footer>
     <script type="module" src="../js/accesstoken.js"></script>
     <script type="module" src="../js/script.js"></script>

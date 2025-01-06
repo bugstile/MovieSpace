@@ -9,33 +9,16 @@
 <body>
     <header>
         <h1>Welcome to Movie Space</h1>
-        <h2>See movies, search and filter genres to find what to watch <span class="highlight-text-color">tonight</span></h2>
+        <h2>See your favorite movies <span class="highlight-text-color">tonight</span></h2>
     </header>
     <main>
-        <div id="toast-container" style="position: fixed; top: 20px; right: 20px; z-index: 1000;"></div>
         <div class="dataContainer">
-            <section class="searchMovies">
-                <h2>Search for a Movie</h2>
-                <form id="searchForm" class="form">
-                    <input type="text" id="searchInput" class="input" placeholder="Enter movie title" required>
-                    <button type="submit" class="button button-primary btn-search" id="searchButton">Search</button>
-                    <button type="button" class="button button-secondary" id="clearSearchResults">Clear search</button>
-                </form>
-                <div class="error" id="errorMessage"></div>
-                <div id="searchedMovie"></div>
-                <div id="searchResults">
-                </div>
-                <div class="pagination" id="pagination"></div>
-            </section>
             <section class="movieFetchSection">
                 <h2>Movies</h3>
-                <p>Displaying <span class="highlight-text-color">20</span> popular movies</p>
-                <div class="genreButtons" id="genreButtons" class="genre-buttons">
-                    <button id="resetGenresButton" class="button button-secondary resetGenresButton selected">Show All</button>
-                    <!-- Buttons will be populated dynamically via JavaScript -->
-                </div>
-                <button class="button button-primary" class="button" id="fetchButton">Fetch More Movies!</button>
-                <div class="default-movie-container" id="content"></div>
+                <p>Displaying <span class="highlight-text-color">your</span> favorite movies</p>
+                <button id="clearFavorites" class="button button-secondary">Clear All Favorites</button>
+                <div class="default-movie-container" id="favoritesContainer"></div>
+                <div class="error" id="errorMessage"></div>
             </section>
         </div>
     </main>
@@ -80,6 +63,7 @@
         <p>&copy;2024 Sebastian Ritschewald</p>
     </footer>
     <script type="module" src="../js/accesstoken.js"></script>
-    <script type="module" src="../js/script.js"></script>
+    <script type="module" src="../js/favorites.js"></script>
+    
 </body>
 </html>

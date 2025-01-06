@@ -81,17 +81,45 @@ function setupSearch() {
     });
 }
 
+function showToast(message) {
+    const toast = document.createElement('div');
+    toast.className = 'toast show';
+    toast.textContent = message;
+
+    document.getElementById('toast-container').appendChild(toast);
+
+    // Automatically hide the toast after 3 seconds
+    setTimeout(() => {
+        toast.classList.remove('show');
+        toast.classList.add('hide');
+        // Remove the toast after the transition
+        toast.addEventListener('transitionend', () => {
+            toast.remove();
+        });
+    }, 3000);
+}
+
 // Function to save movie to favorites
 function saveToFavorites(movie) {
     let favorites = JSON.parse(localStorage.getItem('favoriteMovies')) || [];
     
-    // Check if the movie is already in favorites
     if (!favorites.some(fav => fav.id === movie.id)) {
-        favorites.push(movie);
+        console.log(movie);
+        favorites.push({
+            id: movie.id,
+            title: movie.title,
+            overview: movie.overview,
+            release_date: movie.release_date,
+            vote_average: movie.vote_average,
+            poster_path: movie.poster_path,
+            genres: movie.genres
+        });
+
+        console.log(JSON.stringify(favorites));
         localStorage.setItem('favoriteMovies', JSON.stringify(favorites));
-        alert(`${movie.title} has been added to favorites!`);
+        showToast(`${movie.title} has been added to favorites!`);
     } else {
-        alert(`${movie.title} is already in your favorites.`);
+        showToast(`${movie.title} is already in your favorites.`);
     }
 }
 
@@ -337,15 +365,20 @@ function renderMovies(movies) {
     // Attach event listeners for "Add to favorites" buttons
     document.querySelectorAll('.add-to-favorites').forEach(button => {
         button.addEventListener('click', (event) => {
-            const movieId = event.target.getAttribute('data-movie-id');
-            const movieTitle = event.target.closest('.movie').querySelector('h2').textContent;
+            const movieElement = event.target.closest('.movie'); // Get the closest movie element
 
-            // Create movie object
+            // Create movie object with all properties
             const movie = {
-                id: movieId,
-                title: movieTitle,
-                // You can add more properties if needed
+                id: event.target.getAttribute('data-movie-id'),
+                title: movieElement.querySelector('h2').textContent,
+                overview: movieElement.querySelector('p:nth-of-type(1)').textContent.split(': ')[1], // Overview
+                release_date: movieElement.querySelector('p:nth-of-type(2)').textContent.split(': ')[1], // Release date
+                vote_average: movieElement.querySelector('p:nth-of-type(3)').textContent.split(': ')[1].split(' ')[0], // Vote average
+                poster_path: movieElement.querySelector('.img-movie-highlight').src, // Image source
+                genres: Array.from(movieElement.querySelectorAll('.genre')).map(genre => genre.textContent) // Extract genres
             };
+
+            console.log('Saving movie:', movie); // Log for debugging
 
             saveToFavorites(movie); // Call the function to save to localStorage
         });

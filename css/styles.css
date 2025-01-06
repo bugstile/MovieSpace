@@ -60,6 +60,27 @@ main {
     flex-grow: 1;
 }
 
+.toast {
+    background-color: var(--primary-button-color);
+    color: var(--primary-button-text-color);
+    padding: 10px 20px;
+    margin: 5px;
+    border-radius: 5px;
+    opacity: 0.9;
+    transition: opacity 0.5s ease, transform 0.5s ease;
+    position: relative;
+}
+
+.toast.show {
+    opacity: 1;
+    transform: translateX(0);
+}
+
+.toast.hide {
+    opacity: 0;
+    transform: translateX(100%);
+}
+
 header {
     text-align: center;
     background-color: var(--lighter-background-color);
@@ -343,7 +364,10 @@ input {
     color:var(--primary-button-text-color);
 }
 
-
+#clearFavorites {
+    margin-bottom: 50px;
+    margin-top: 25px;
+}
 
 .pagination {
     display: flex;

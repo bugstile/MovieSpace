@@ -176,8 +176,13 @@ h2 {
     background-color: var(--secondary-button-hover-color);
 }
 
+.btn-search{
+    padding-left:50px;
+    padding-right:50px;
+}
+
 .form{
-    margin-bottom:50px;
+    margin-bottom:25px;
 }
 
 input {
@@ -314,6 +319,32 @@ input {
     transform: scale(1.05); 
 }
 
+.genreButtons{
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: center;
+    align-content: center;
+    flex-direction: row;
+    margin: 0 auto;
+    margin-top: 20px;
+}
+
+.genre-button {
+    margin:5px;
+}
+
+.resetGenresButton {
+    margin:5px;
+}
+
+.genre-button.selected, #resetGenresButton.selected {
+    background-color:var(--primary-button-color);
+    color:var(--primary-button-text-color);
+}
+
+
+
 .pagination {
     display: flex;
     flex-wrap: wrap;
@@ -340,6 +371,7 @@ input {
 
 #fetchButton{
     margin-bottom:50px;
+    margin-top:25px;
 }
 
 /* .page-button {
@@ -565,12 +597,11 @@ nav a:focus {
     }
 
     .button {
-        width: 90vw;
         margin-top: 10px;
     }
 
-    .btn-search{
-        padding:25px;
+    .genre-button {
+        width: auto;
     }
 
     .movie {

@@ -10,6 +10,27 @@ document.getElementById('fetchButton').addEventListener('click', fetchNextPage);
 const clearSearchResultsButton = document.getElementById('clearSearchResults');
 clearSearchResultsButton.addEventListener('click', clearSearchResults);
 
+const resetGenresButton = document.getElementById('resetGenresButton');
+
+resetGenresButton.addEventListener('click', () => {
+    document.querySelectorAll('.genre-button').forEach(btn => btn.classList.remove('selected'));
+    document.getElementById('resetGenresButton').classList.add('selected');
+
+    currentPage = 1;
+    clearSearchResults(); 
+
+    fetchMovies(); 
+});
+
+resetGenresButton.addEventListener('click', () => {
+    document.querySelectorAll('.genre-button').forEach(btn => btn.classList.remove('selected'));
+
+    currentPage = 1;
+    clearSearchResults(); 
+
+    fetchMovies(); 
+});
+
 searchButton.addEventListener('click', (event => {
     event.preventDefault(); // Prevent default form submission
     searchInput.focus();
@@ -35,7 +56,7 @@ searchForm.addEventListener('submit', (event) => {
 
 async function init() {
     await fetchGenres();
-    await fetchMovies(currentPage);
+    await fetchMovies();
     setupSearch();
 }
 
@@ -60,24 +81,62 @@ function setupSearch() {
     });
 }
 
+// Function to save movie to favorites
+function saveToFavorites(movie) {
+    let favorites = JSON.parse(localStorage.getItem('favoriteMovies')) || [];
+    
+    // Check if the movie is already in favorites
+    if (!favorites.some(fav => fav.id === movie.id)) {
+        favorites.push(movie);
+        localStorage.setItem('favoriteMovies', JSON.stringify(favorites));
+        alert(`${movie.title} has been added to favorites!`);
+    } else {
+        alert(`${movie.title} is already in your favorites.`);
+    }
+}
+
+// Function to handle button click
+document.querySelectorAll('.add-to-favorites').forEach(button => {
+    button.addEventListener('click', (event) => {
+        const movieId = event.target.getAttribute('data-movie-id');
+        const movieTitle = event.target.closest('.movie').querySelector('h2').textContent;
+        
+        // Create movie object
+        const movie = {
+            id: movieId,
+            title: movieTitle,
+            // Add more properties if needed, like overview, release date, etc.
+        };
+
+        saveToFavorites(movie);
+    });
+});
+
 function resetSearchedMovie(){
     document.getElementById('searchedMovie').innerHTML = '';
 }
 
 async function fetchWithAuth(url) {
-    const response = await fetch(url, {
-        method: 'GET',
-        headers: {
-            'Authorization': `Bearer ${accessToken}`,
-            'Accept': 'application/json'
+    try{
+        const response = await fetch(url, {
+            method: 'GET',
+            headers: {
+                'Authorization': `Bearer ${accessToken}`,
+                'Accept': 'application/json'
+            }
+        });
+    
+        if (!response.ok) {
+            const errorMessage = await response.text();
+            throw new Error(`HTTP error! Status: ${response.status}. Message: ${errorMessage}`);
         }
-    });
+    
+        return response.json();
 
-    if (!response.ok) {
-        throw new Error(`HTTP error! status: ${response.status}`);
+    } catch (error) {
+        console.error('Error fetching movie data:', error);
+        alert('An error occurred while fetching data. Please try again later.');
     }
-
-    return response.json();
 }
 
 async function fetchGenres() {
@@ -85,29 +144,57 @@ async function fetchGenres() {
     try {
         const data = await fetchWithAuth(apiUrl);
         genreMap = Object.fromEntries(data.genres.map(genre => [genre.id, genre.name]));
+
+        const genreButtonsDiv = document.getElementById('genreButtons');
+        data.genres.forEach(genre => {
+            const button = document.createElement('button');
+            button.textContent = genre.name; // Display genre name
+            button.classList.add('genre-button', 'button', 'button-secondary');
+            button.setAttribute('data-genre-id', genre.id); // Store genre ID in data attribute
+        
+            button.addEventListener('click', () => {
+                // Remove 'selected' class from all buttons
+                document.getElementById('resetGenresButton').classList.remove('selected');
+                document.querySelectorAll('.genre-button').forEach(btn => btn.classList.remove('selected'));
+                
+                // Add 'selected' class to the clicked button
+                button.classList.add('selected');
+            
+                const selectedGenreId = button.getAttribute('data-genre-id');
+                currentPage = 1; // Reset to the first page when fetching new movies
+                clearSearchResults(); // Clear previous results
+                fetchMovies(selectedGenreId, currentPage); // Fetch movies for the selected genre
+            });
+        
+            genreButtonsDiv.appendChild(button); // Append button to the genre buttons div
+        });
     } catch (error) {
         console.error('Error fetching genres:', error);
     }
 }
 
-async function fetchMovies(page = 1) {
-    const apiUrl = `https://api.themoviedb.org/3/discover/movie?include_adult=false&include_video=false&language=en-US&page=${page}&sort_by=popularity.desc`;
+async function fetchMovies(genreId = '', page = 1) {
+    const genreQuery = genreId ? `&with_genres=${genreId}` : ''; // Include genre if selected
+    const apiUrl = `https://api.themoviedb.org/3/discover/movie?include_adult=false&include_video=false&language=en-US&page=${page}&sort_by=popularity.desc${genreQuery}`;
+
     try {
         const data = await fetchWithAuth(apiUrl);
-        renderMovies(data.results); // Render all results without slicing
+        renderMovies(data.results); // Render all results
     } catch (error) {
         console.error('Error fetching movie data:', error);
     }
 }
 
-// Function to handle the button click for fetching the next page
-function fetchNextPage() {
-    currentPage++; 
-    fetchMovies(currentPage); 
-}
+
 
 let currentPage = 1; // Track the current page
 let totalResults = 0; // Store total results
+
+function fetchNextPage() {
+    currentPage++; 
+    const selectedGenreId = document.querySelector('.genre-button.selected')?.getAttribute('data-genre-id') || ''; // Get the currently selected genre
+    fetchMovies(selectedGenreId, currentPage); // Fetch movies for the current page with genre filter
+}
 
 async function fetchMovieByTitle(title, page = 1) {
     searchPage = page; // Update the search page variable
@@ -246,12 +333,28 @@ function renderMovie(movie) {
 function renderMovies(movies) {
     const contentDiv = document.getElementById('content');
     contentDiv.innerHTML = movies.map(createMovieHTML).join('');
+
+    // Attach event listeners for "Add to favorites" buttons
+    document.querySelectorAll('.add-to-favorites').forEach(button => {
+        button.addEventListener('click', (event) => {
+            const movieId = event.target.getAttribute('data-movie-id');
+            const movieTitle = event.target.closest('.movie').querySelector('h2').textContent;
+
+            // Create movie object
+            const movie = {
+                id: movieId,
+                title: movieTitle,
+                // You can add more properties if needed
+            };
+
+            saveToFavorites(movie); // Call the function to save to localStorage
+        });
+    });
 }
 
 function createMovieHTML(movie) {
     const genresList = movie.genre_ids.map(id => `<span class="genre">${genreMap[id]}</span>`).join('');
     
-    // Set the image source based on the availability of poster_path
     const posterSrc = movie.poster_path 
         ? `https://image.tmdb.org/t/p/w500${movie.poster_path}` 
         : '../img/sad-outline.svg';
@@ -266,6 +369,7 @@ function createMovieHTML(movie) {
             <p><strong>Release Date:</strong> ${movie.release_date}</p>
             <p><strong>Vote Average:</strong> ${movie.vote_average} (${movie.vote_count} votes)</p>
             <p><strong>Genres:</strong> <span class="genres">${genresList}</span></p>
+            <button class="button button-primary add-to-favorites" data-movie-id="${movie.id}">Add to favorites</button>
         </div>
     `;
 }

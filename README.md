@@ -45,7 +45,7 @@ För att köra projektet lokalt, följ dessa steg:
 - Jag använder async och await för fetch, API länken är https alltid, data laddas in dynamiskt på hemsidan.
 - Jag använder promise.all för init funktionen.
 - Caching används för genres i LocalStorage.
-- UX/UI-kraven uppfyller jag med bra kontraster på färger och tydliga val för användaren.
+- UX/UI-kraven uppfyller jag med bra kontraster på färger och tydliga val för användaren, det finns en del användarvänliga meddelanden också.
 
 # Beskriv hur jag hämtar data från API:et (Vilket API? URL/enpoint, parametrar, API nyckel?).
 

@@ -1,3 +1,3 @@
-const accessToken = 'eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiJhMWRmZTFkZmY0YjY4ZjAwMmI0ZDY0NzFkM2QyZTc0MyIsIm5iZiI6MTczNjA0NjkxOS41NzksInN1YiI6IjY3NzlmOTQ3MjVlMGU5MWM1Nzc0ZGNiZSIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.psbqz69KT6dwkE21_H0epL9dqhSP4r5TKK-Haf0sIJ0';
+const accessToken = 'insert access token here';
 
 export {accessToken};

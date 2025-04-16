@@ -62,6 +62,7 @@ async function init() {
         console.error('Error during initialization:', error);
     }
 }
+
 init();
 
 let debounceTimeout;
